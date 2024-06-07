@@ -32,15 +32,7 @@ class App {
         );
         this.express.use(
             cors({
-                credentials: true,
-                origin: [
-                    `${process.env.FRONTEND_APP_URL}`,
-                    `${process.env.MOBILE_APP_URL}`,
-                    `${process.env.ADMIN_APP_URL}`,
-                    `${process.env.BACKEND_APP_URL}`,
-                    `${process.env.IP_URL_ONE}`,
-                    `${process.env.IP_URL_TWO}`,
-                ],
+                origin: '*',
             })
         );
         this.express.use(morgan('dev'));
