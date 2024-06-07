@@ -27,7 +27,7 @@ class App {
     private initialiseMiddleware(): void {
         this.express.use(
             helmet({
-                crossOriginResourcePolicy: true,
+                crossOriginResourcePolicy: false,
             })
         );
         this.express.use(
