@@ -30,7 +30,19 @@ class App {
                 crossOriginResourcePolicy: true,
             })
         );
-        this.express.use(cors({origin: '*'}));
+        this.express.use(
+            cors({
+                credentials: true,
+                origin: [
+                    `${process.env.FRONTEND_APP_URL}`,
+                    `${process.env.MOBILE_APP_URL}`,
+                    `${process.env.ADMIN_APP_URL}`,
+                    `${process.env.BACKEND_APP_URL}`,
+                    `${process.env.IP_URL_ONE}`,
+                    `${process.env.IP_URL_TWO}`,
+                ],
+            })
+        );
         this.express.use(morgan('dev'));
         this.express.use(express.json());
         this.express.use(express.urlencoded({ extended: false }));
