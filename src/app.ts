@@ -30,11 +30,7 @@ class App {
                 crossOriginResourcePolicy: false,
             })
         );
-        this.express.use(
-            cors({
-                origin: '*',
-            })
-        );
+        this.express.use(cors());
         this.express.use(morgan('dev'));
         this.express.use(express.json());
         this.express.use(express.urlencoded({ extended: false }));
