@@ -868,6 +868,21 @@ class CoworkingService {
                 throw new Error('Coworking not found');
             }
 
+            const result = await this.coworking.aggregate([
+                { $unwind: '$survey' },
+                {
+                    $group: {
+                        _id: null,
+                        maxCode: { $max: '$survey.code' },
+                    },
+                },
+            ]);
+
+            const maxCode =
+                result.length > 0 && result[0].maxCode
+                    ? result[0].maxCode + 1
+                    : 100;
+
             const newSurvey: Survey = {
                 userId,
                 status: false,
@@ -878,6 +893,7 @@ class CoworkingService {
                 startTime: requestedStartTime,
                 endTime: requestedEndTime,
                 numberSeats,
+                code: maxCode,
             };
 
             coworking.survey.unshift(newSurvey);
