@@ -114,31 +114,30 @@ const CoworkingSchema = new Schema(
     }
 );
 
-CoworkingSchema.pre('save', async function (next) {
-    if (this.isModified('survey') && this.survey.length > 0) {
-        const newSurveyEntry = this.survey[this.survey.length - 1];
-        if (newSurveyEntry && newSurveyEntry.code === undefined) {
-            try {
-                const result = await model<Coworking>('Coworkings').aggregate([
-                    { $unwind: '$survey' },
-                    {
-                        $group: {
-                            _id: null,
-                            maxCode: { $max: '$survey.code' },
-                        },
-                    },
-                ]);
-                const maxCode =
-                    result.length > 0 && result[0].maxCode
-                        ? result[0].maxCode + 1
-                        : 100;
-                newSurveyEntry.code = maxCode;
-            } catch (error: any) {
-                throw new Error(error.message);
-            }
-        }
-    }
-    next();
-});
+// CoworkingSchema.pre('save', async function (next) {
+//     if (this.isModified('survey') && this.survey.length > 0) {
+//         const newSurveyEntry = this.survey[0];
+//         try {
+//             const result = await model<Coworking>('Coworkings').aggregate([
+//                 { $unwind: '$survey' },
+//                 {
+//                     $group: {
+//                         _id: null,
+//                         maxCode: { $max: '$survey.code' },
+//                     },
+//                 },
+//             ]);
+//             const maxCode =
+//                 result.length > 0 && result[0].maxCode
+//                     ? result[0].maxCode + 1
+//                     : 100;
+
+//             newSurveyEntry.code = maxCode;
+//         } catch (error: any) {
+//             throw new Error(error.message);
+//         }
+//     }
+//     next();
+// });
 
 export default model<Coworking>('Coworkings', CoworkingSchema);
